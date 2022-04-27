@@ -1,6 +1,6 @@
 import pandas as pd
 from data_analysis import DataAnalysis
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, PowerTransformer, RobustScaler, MaxAbsScaler, QuantileTransformer
 from PyInquirer import prompt, Separator
 
 

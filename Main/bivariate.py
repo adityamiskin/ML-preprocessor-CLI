@@ -45,7 +45,6 @@ class Bivariate:
                             "BoxPlot",
                             "Correlation heat map",
                             "Simple linear regression model stats",
-                            "Distribution plot with hue",
                             "Go Back",
                         ],
                     }

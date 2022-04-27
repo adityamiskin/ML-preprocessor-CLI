@@ -4,14 +4,16 @@ from imputation import Imputation
 from download import Download
 from categorical import Categorical
 from feature_scaling import FeatureScaling
+from pca2 import pca
 from PyInquirer import style_from_dict, Token, prompt, Separator
 import pyfiglet
+import pandas as pd
 
 
 class Preprocessor:
 
     data = 0
-
+    targetdf = pd.DataFrame()
     style = style_from_dict(
         {
             Token.Separator: "#cc5454",
@@ -29,13 +31,16 @@ class Preprocessor:
         "Handling NULL Values",
         "Encoding Categorical Data",
         "Feature Scaling of the Dataset",
+        "Perform PCA",
         "Download the modified dataset",
         "Exit",
     ]
 
     def __init__(self):
         self.data = DataInput().inputFunction()
+
         print(pyfiglet.figlet_format("Welcome  to\nML  Preprocessor CLI  !  !  !"))
+        self.targetdf = self.preprocessorMain()
 
     # function to remove the target column of the DataFrame.
     def removeTargetColumn(self):
@@ -55,10 +60,8 @@ class Preprocessor:
         ]
         ans = prompt(ques, style=self.style)
         target = ans.get("target")
-
-        self.data.drop([target], axis=1, inplace=True)
+        self.targetdf = self.data[target]
         print("Done.......\U0001F601")
-
         return
 
     # prints data
@@ -102,11 +105,14 @@ class Preprocessor:
             elif task == "Feature Scaling of the Dataset":
                 self.data = FeatureScaling(self.data, self.style).scaling()
 
+            # moves the control into PCA class
+            elif task == "Perform PCA":
+                self.data = pca(self.data)
+                self.data.pca_eigen()
+
             # moves the control into the Download class.
             elif task == "Download the modified dataset":
                 Download(self.data, self.style).download()
 
 
 obj = Preprocessor()
-
-obj.preprocessorMain()
